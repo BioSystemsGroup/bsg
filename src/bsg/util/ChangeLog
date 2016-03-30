@@ -1,0 +1,6 @@
+2016-03-30  gepr  <gepr@tempusdictum.com>
+
+	* CollectionUtils.java: MyInt → MutableInt.
+
+	* MutableInt.java: Change name from MyInt to MutableInt.
+

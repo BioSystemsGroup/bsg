@@ -9,20 +9,16 @@
 
 package bsg.util;
 
-/**
- *
- * @author gepr
- */
-public class MyInt extends Number {
+public class MutableInt extends Number {
   private static final long serialVersionUID = -7399169793513727172L;
    public long val = -Integer.MAX_VALUE;
    
-   public MyInt(long i) {
+   public MutableInt(long i) {
       val = i;
    }
-   public MyInt set(long i) { val = i; return this;}
-   public MyInt add(long i) { val += i; return this;}
-   public MyInt sub(long i) { val -= i; return this;}
+   public MutableInt set(long i) { val = i; return this;}
+   public MutableInt add(long i) { val += i; return this;}
+   public MutableInt sub(long i) { val -= i; return this;}
    
   @Override
    public double doubleValue() { return (double)val; }

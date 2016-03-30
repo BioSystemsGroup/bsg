@@ -216,16 +216,16 @@ public class CollectionUtils
 
   /**
    * Replace all values with 0.
-   * @param m java.util.Map<String,isl.util.MyInt>
+   * @param m java.util.Map<String,Number>
    */
   public static void zero_mi(Map<String,Number> m) {
     for (java.util.Map.Entry<String,Number> me : m.entrySet())
-      ((MyInt)me.getValue()).set(0);
+      ((MutableInt)me.getValue()).set(0);
   }
   
   /**
    * Sum the values.
-   * @param m java.util.Map<String,isl.util.MyInt>
+   * @param m java.util.Map<String,Number>
    * @return long
    */
   public static long sum_mi(Map<String,Number> m) {
@@ -239,9 +239,9 @@ public class CollectionUtils
       LinkedHashMap<String, Number> types = new LinkedHashMap<>();
       for (TypeString s : al) {
         if (types.containsKey(s.getType())) {
-          ((MyInt)types.get(s.getType())).add(1);
+          ((MutableInt)types.get(s.getType())).add(1);
         } else {
-          types.put(s.getType(), new MyInt(1));
+          types.put(s.getType(), new MutableInt(1));
         }
       }
       return types;
@@ -311,7 +311,7 @@ public class CollectionUtils
     for (Map.Entry<String,Number> me : giver.entrySet()) {
       if (receiver.containsKey(me.getKey())) {
         Number n = receiver.get(me.getKey());
-        if (n instanceof MyInt) ((MyInt)n).add(me.getValue().intValue());
+        if (n instanceof MutableInt) ((MutableInt)n).add(me.getValue().intValue());
         else receiver.put(me.getKey(),n.intValue()+me.getValue().intValue());
       }
     }
