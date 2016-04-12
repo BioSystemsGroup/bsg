@@ -26,16 +26,11 @@ public class ScriptEval {
             getClass().getClassLoader().getResourceAsStream(fileName));
   }
   
-  public double eval(double t) {
+  public double eval(double t) throws javax.script.ScriptException {
     double retVal = Double.NaN;
     Object result = null;
     scope.put("model_time", t);
-    try {
-      result = engine.eval(script,scope);
-    } catch (ScriptException e) {
-      System.err.println(e.getMessage());
-      System.exit(-1);
-    }
+    result = engine.eval(script,scope);
     if (result instanceof Double)
       retVal = (Double)result;
     else
@@ -43,6 +38,51 @@ public class ScriptEval {
     return retVal;
   }
 
+  public static void main(String args[]) {
+    ScriptEval se1 = null;
+    se1 = new ScriptEval("bsg/test/script.js");
+    // case |k| ≠ |v|
+    try {
+      String[] k1 = {"hello", "there", "dude", "red"};
+      Object[] v1 = {true, "string1", 0.1};
+      testcase(se1,k1,v1);
+    } catch (Exception e) { System.err.println(e); }
+
+    // case |k| == |v| but |k| ≠ |expected|
+    try {
+      String[] k2 = {"hello", "there", "dude", "red"};
+      Object[] v2 = {true, "string1", 0.1, false};
+      testcase(se1,k2,v2);
+    } catch (Exception e) { System.err.println(e); }
+    
+    // invalid parameter
+    try {
+      String[] k3 = {"hello", "are", "blue"};
+      Object[] v3 = {false, false, "string2"};
+      testcase(se1,k3,v3);
+    } catch (Exception e) { System.err.println(e); }
+    
+    // invalid type
+    try {
+      String[] k4 = {"you", "are", "blue"};
+      Object[] v4 = {false, false, "string2"};
+      testcase(se1,k4,v4);
+    } catch (Exception e) { System.err.println(e); }
+
+    // pass
+    try {
+      String[] k5 = {"you", "are", "blue"};
+      Object[] v5 = {Double.POSITIVE_INFINITY, false, "string2"};
+      testcase(se1,k5,v5);
+    } catch (Exception e) { System.err.println(e); }
+
+  }
+  private static void testcase(ScriptEval se, String[] k, Object[] v) throws javax.script.ScriptException {
+    se.scope.put("keys", k);
+    se.scope.put("vals", v);
+    System.out.println("output = "+se.eval(Double.NaN));
+  }
+  
   /* Commented out while we extract bsg.util from isl.util
    * We need a bsg.util-specific test script spanning the features we
    * expect for the isl and ishc.
