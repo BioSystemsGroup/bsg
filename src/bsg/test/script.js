@@ -6,9 +6,10 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
-
-var jsException = Java.type("javax.script.ScriptException");
-
+if (!started) {
+  load("classpath:bsg/util/preamble.js");
+  started = true;
+}
 //parameters -- need not be ordered
 var keys,vals;
 
@@ -18,18 +19,6 @@ eMap["you"] = Java.type("java.lang.Double");
 eMap["are"] = Java.type("java.lang.Boolean");
 eMap["blue"] = Java.type("java.lang.String");
 
+check(keys, vals, eMap);
 
-// exception for array & length & length match
-if (keys.length != vals.length) throw new jsException("|keys| ≠ |vals|") ;
-if (keys.length != Object.keys(eMap).length) throw new jsException("Expected "+Object.keys(eMap).length+" parameters.  Got "+keys.length);
-for (var ndx=0 ; ndx<keys.length ; ndx++) {
-  // exceptions for types
-  if (eMap[keys[ndx]] == null) throw new jsException("Invalid Parameter: "+keys[ndx]);
-  else if (!(vals[ndx] instanceof eMap[keys[ndx]])) 
-    throw new jsException("Type Error! Got: "+vals[ndx]+", Expected instanceof: "+eMap[keys[ndx]]);
-  print(keys[ndx]+" → "+vals[ndx]);
-};
-
-var model_time;
-
-output = model_time;
+output = 0.0

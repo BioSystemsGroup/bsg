@@ -1,0 +1,4 @@
+2016-04-15  gepr  <gepr@tempusdictum.com>
+
+	* script.js: Move check() function to a preamble.js script in the main source.  Use "started" boolean.
+

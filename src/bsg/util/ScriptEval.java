@@ -18,18 +18,22 @@ public class ScriptEval {
 
   String script = null;
   
-  public ScriptEval(String fileName) {
+  public ScriptEval(String scriptLocation) {
     context.setBindings(engine.createBindings(), javax.script.ScriptContext.ENGINE_SCOPE);
     scope = context.getBindings(javax.script.ScriptContext.ENGINE_SCOPE);
 
-    script = StringUtils.convertStreamToString(
-            getClass().getClassLoader().getResourceAsStream(fileName));
+    //script = StringUtils.convertStreamToString(
+    //        getClass().getClassLoader().getResourceAsStream(fileName));
+    script = "load(\""+scriptLocation+"\")";
+
   }
   
-  public double eval(double t) throws javax.script.ScriptException {
+  public double eval() throws ScriptException {
     double retVal = Double.NaN;
     Object result = null;
-    scope.put("model_time", t);
+    
+    if (!scope.containsKey("started")) throw new ScriptException("You must put the boolean variable \"started\" into the script's scope before using a script.");
+    
     result = engine.eval(script,scope);
     if (result instanceof Double)
       retVal = (Double)result;
@@ -40,7 +44,8 @@ public class ScriptEval {
 
   public static void main(String args[]) {
     ScriptEval se1 = null;
-    se1 = new ScriptEval("bsg/test/script.js");
+    se1 = new ScriptEval("classpath:bsg/test/script.js");
+    se1.scope.put("started", false);
     // case |k| ≠ |v|
     try {
       String[] k1 = {"hello", "there", "dude", "red"};
@@ -77,10 +82,11 @@ public class ScriptEval {
     } catch (Exception e) { System.err.println(e); }
 
   }
-  private static void testcase(ScriptEval se, String[] k, Object[] v) throws javax.script.ScriptException {
+
+    private static void testcase(ScriptEval se, String[] k, Object[] v) throws ScriptException {
     se.scope.put("keys", k);
     se.scope.put("vals", v);
-    System.out.println("output = "+se.eval(Double.NaN));
+    System.out.println("output = "+se.eval());
   }
   
   /* Commented out while we extract bsg.util from isl.util

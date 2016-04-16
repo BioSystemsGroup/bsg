@@ -1,3 +1,10 @@
+2016-04-15  gepr  <gepr@tempusdictum.com>
+
+	* preamble.js: New script to house the check() function and the declaration of the jsException.
+
+	* ScriptEval.java (constructor): Use passed in String as a location descriptor rather than a file name.  E.g. "classpath:isl/model/ei-gradient-function.js".  Ideally, if we retrieve these from the network, we can use "http://xyz.com/abc.js".  The Nashorn JS load() uses this syntax.
+	(eval()): No longer single out time as a special variable.  Input it like the rest of the variables, with the scope.put() method.  Look for the boolean "started" variable in the script's scope.  If it's not there, throw an exception.
+
 2016-03-30  gepr  <gepr@tempusdictum.com>
 
 	* CollectionUtils.java: MyInt → MutableInt.
