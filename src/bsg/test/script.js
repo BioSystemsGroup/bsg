@@ -6,10 +6,6 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
-if (!started) {
-  load("classpath:bsg/util/preamble.js");
-  started = true;
-}
 //parameters -- need not be ordered
 var keys,vals;
 
@@ -19,6 +15,7 @@ eMap["you"] = Java.type("java.lang.Double");
 eMap["are"] = Java.type("java.lang.Boolean");
 eMap["blue"] = Java.type("java.lang.String");
 
-check(keys, vals, eMap);
-
-output = 0.0
+function eval() {
+  check(keys, vals, eMap);
+  return Math.E;
+}

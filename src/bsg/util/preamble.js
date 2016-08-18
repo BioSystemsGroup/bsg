@@ -20,4 +20,5 @@ function check(k, v, ref) {
       throw new jsException("Type Error! Got: "+v[ndx]+", Expected instanceof: "+ref[k[ndx]]);
   };
 }
-  
+
+var started = true;

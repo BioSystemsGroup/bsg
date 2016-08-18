@@ -1,3 +1,9 @@
+2016-08-18  gepr  <gepr@tempusdictum.com>
+
+	* preamble.js: Move started variable declaration here to support those scripts that want to use it.
+
+	* ScriptEval.java (ScriptEval): Refactor so that script files are only loaded once, then functions defined inside the scripts can be called later.  This avoids having too many open script files at any given time.
+
 2016-04-15  gepr  <gepr@tempusdictum.com>
 
 	* preamble.js: New script to house the check() function and the declaration of the jsException.

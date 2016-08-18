@@ -1,3 +1,7 @@
+2016-08-18  gepr  <gepr@tempusdictum.com>
+
+	* script.js: Refactor loading preamble.js in the ScriptEval constructor instead of through its eval() method.  Define the new Javascript eval() method so this script can be loaded only once, then eval() can be called many times.  This avoids having lots of open script files at any given time.
+
 2016-04-15  gepr  <gepr@tempusdictum.com>
 
 	* script.js: Move check() function to a preamble.js script in the main source.  Use "started" boolean.
