@@ -1,3 +1,7 @@
+2016-09-01-14:32  gepr  <gepr@tempusdictum.com>
+
+	* CollectionUtils.java (addIn()): If key is absent from receiver, insert giver's value (without copy).  If receiver value is double or float, use giver.doubleValue().  Everything else uses giver.longValue().
+
 2016-08-18  gepr  <gepr@tempusdictum.com>
 
 	* preamble.js: Move started variable declaration here to support those scripts that want to use it.

@@ -303,7 +303,8 @@ public class CollectionUtils
    * Add the <key,value> contents of the giver into the receiver. If there are
    * entries in the receiver that don't exist in the giver, they'll stay the
    * same.  If there are entries in the giver that don't exist in the receiver,
-   * they'll be inserted.
+   * they'll be inserted.  If the receiver is double or float, doubleValue() is
+   * used.  Everything else uses longValue() to produce Long.
    * @param receiver
    * @param giver 
    */
@@ -312,8 +313,12 @@ public class CollectionUtils
       if (receiver.containsKey(me.getKey())) {
         Number n = receiver.get(me.getKey());
         if (n instanceof MutableInt) ((MutableInt)n).add(me.getValue().intValue());
-        else receiver.put(me.getKey(),n.intValue()+me.getValue().intValue());
-      }
+        else if (n instanceof Double || n instanceof Float)
+          receiver.put(me.getKey(), n.doubleValue()+me.getValue().doubleValue());
+        else 
+          receiver.put(me.getKey(),n.longValue()+me.getValue().longValue());
+      } else
+        receiver.put(me.getKey(), me.getValue());
     }
   }
   
@@ -323,6 +328,18 @@ public class CollectionUtils
       @SuppressWarnings("unchecked")
       java.util.ArrayList<Integer> new_al = (java.util.ArrayList<Integer>) shuffle(al, new ec.util.MersenneTwisterFast());
       for (int i=0 ; i<al.size() ; i++) System.out.println(new_al.get(i).toString());
+      
+      java.util.Map r = new java.util.HashMap<>();
+      java.util.Map g = new java.util.HashMap<>(3);
+      g.put("a",1); g.put("b",2.0);g.put("c",0xffff);
+      System.out.print(CollectionUtils.describe(r)+" + "+CollectionUtils.describe(g)+" = ");
+      CollectionUtils.addIn(r,g);
+      System.out.println(CollectionUtils.describe(r));
+      
+      g.put("a",1.0); g.put("b",2); g.put("c", Double.POSITIVE_INFINITY);
+      System.out.print(CollectionUtils.describe(r)+" + "+CollectionUtils.describe(g)+" = ");
+      CollectionUtils.addIn(r,g);
+      System.out.println(CollectionUtils.describe(r));
   }
 }  // end of CollectionUtils class
 
