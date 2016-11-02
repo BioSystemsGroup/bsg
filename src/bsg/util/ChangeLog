@@ -1,3 +1,8 @@
+2016-11-02-16:24  gepr  <gepr@tempusdictum.com>
+
+	* ClassUtils, CollectionUtils, ObjectUtils, StringUtils: Reformatted and removed some TBD comments.
+	* ClassUtils.java (getResourceFile()): Add a call to URLDecoder before looking for the file.  This should allow things like unicode characters in path names.
+
 2016-09-01-14:32  gepr  <gepr@tempusdictum.com>
 
 	* CollectionUtils.java (addIn()): If key is absent from receiver, insert giver's value (without copy).  If receiver value is double or float, use giver.doubleValue().  Everything else uses giver.longValue().

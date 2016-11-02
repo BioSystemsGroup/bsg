@@ -17,23 +17,13 @@ import java.util.Collections;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.Map;
 import java.beans.PropertyDescriptor;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-
-// TBD: Should ObjectUtils extend ClassUtils or should they be separate?
-//      Or perhaps they should be conbined into one class?
-
 
 /**
- * TBD: Add class description
- *
  * @future
  *    - 
  *
@@ -47,23 +37,15 @@ import java.lang.reflect.InvocationTargetException;
 public class ObjectUtils extends ClassUtils
 {
 
-  // TBD: Add doc
   private static final Logger log = LoggerFactory.getLogger( ObjectUtils.class );
-
 
   // === [ Bean-related Utilities ] =======================================
 
-  /**
-   * TBD: Add documentation
-   *
-   */
   protected static Map<Class,Map<String,PropertyDescriptor>> propertyDescriptors
     = new java.util.LinkedHashMap<Class,Map<String,PropertyDescriptor>>();
 
 
   /**
-   * TBD: Add documentation
-   *
    * TBD: Possibly create a registry of property name comparators,
    *      i.e. a Map<Class,Comparator<String>>, and then, before
    *      creating an empty map, we check to see if there is a
@@ -74,17 +56,11 @@ public class ObjectUtils extends ClassUtils
   public static Map<String,PropertyDescriptor> createEmptyPropertyDescriptorMap
     ( Class cls )
   {
-    //log.debug( "Creating empty property descriptor map for class '{}'", cls ); 
-
-    //return new java.util.LinkedLinkedLinkedHashMap<String,PropertyDescriptor>();
-
     return new java.util.TreeMap<String,PropertyDescriptor>();
   }
 
 
   /**
-   * TBD: Add documentation
-   *
    * TBD: We could generalize this to take a 'type' param that specified
    *      which descriptor type to get, i.e. Property, Method, EventSet,
    *      Bean, Parameter or Feature (all of the above).  The 'type'
@@ -105,9 +81,7 @@ public class ObjectUtils extends ClassUtils
    *      or the user could possibly override that.
    *
    */
-  public static Map<String,PropertyDescriptor> createPropertyDescriptorMap
-    ( Class cls )
-  {
+  public static Map<String,PropertyDescriptor> createPropertyDescriptorMap( Class cls ) {
     Map<String,PropertyDescriptor>  map   = null;
     java.beans.BeanInfo             info  = null;
     String                          name  = null;
@@ -145,11 +119,6 @@ public class ObjectUtils extends ClassUtils
     return map;
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static synchronized Map<String,PropertyDescriptor>
     getPropertyDescriptorMap ( Class cls )
   {
@@ -168,23 +137,11 @@ public class ObjectUtils extends ClassUtils
     return map;
   }
 
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static Map<String,PropertyDescriptor>
-    getPropertyDescriptorMap ( Object obj )
-  {
+  public static Map<String,PropertyDescriptor> getPropertyDescriptorMap( Object obj ) {
     return getPropertyDescriptorMap( obj.getClass() );
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static Set<String> getPropertyNames ( Class cls )
-  {
+  public static Set<String> getPropertyNames( Class cls ) {
     try {
       return getPropertyDescriptorMap( cls ).keySet();
     } catch ( Exception e ) {
@@ -200,22 +157,11 @@ public class ObjectUtils extends ClassUtils
     return Collections.emptySet();
   }
 
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static Set<String> getPropertyNames ( Object obj )
-  {
+  public static Set<String> getPropertyNames( Object obj ) {
     return getPropertyNames( obj.getClass() );
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static String listPropertyDescriptors ( Class cls )
-  {
+  public static String listPropertyDescriptors( Class cls ) {
     Map<String,PropertyDescriptor>  map   = null;
     PropertyDescriptor              pd    = null;
     String                          fmt   = "\t%s: %s\n";
@@ -233,14 +179,7 @@ public class ObjectUtils extends ClassUtils
     return list;
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static PropertyDescriptor getPropertyDescriptor ( Class cls,
-                                                           String name )
-  {
+  public static PropertyDescriptor getPropertyDescriptor(Class cls, String name) {
     Map<String,PropertyDescriptor>  map  = null;
     PropertyDescriptor              pd   = null;
 
@@ -257,40 +196,19 @@ public class ObjectUtils extends ClassUtils
     return pd;
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static PropertyDescriptor getPropertyDescriptor ( Object obj,
-                                                           String name )
-  {
+  public static PropertyDescriptor getPropertyDescriptor ( Object obj, String name ) {
     return getPropertyDescriptor( obj.getClass(), name );
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static String toString ( Class cls ) {
-    if ( cls == null ) {
-      return "null";
-    }
+    if ( cls == null ) return "null";
     return cls.getSimpleName();
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static String toString ( Method mthd ) {
     StringBuilder sb = new StringBuilder();
 
-    if ( mthd == null ) {
-      return "null";
-    }
+    if ( mthd == null ) return "null";
 
     for ( Class<?> param : mthd.getParameterTypes() ) {
       if ( sb.length() > 0 ) sb.append( "," );
@@ -302,21 +220,13 @@ public class ObjectUtils extends ClassUtils
     return sb.toString();
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static String toString ( PropertyDescriptor pd )
-  {
+  public static String toString( PropertyDescriptor pd ) {
     StringBuilder sb      = new StringBuilder();
     StringBuilder attrs   = new StringBuilder();
     Class<?>      type    = null;
     Class<?>      editor  = null;
 
-    if ( pd == null ) {
-      return "null";
-    }
+    if ( pd == null ) return "null";
 
     //attrs.append( "(" );
     //for ( String name : Collections.list(pd.attributeNames()) ) {
@@ -350,11 +260,6 @@ public class ObjectUtils extends ClassUtils
     return sb.toString();
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static Method getReadMethod ( Object obj, String name ) {
     PropertyDescriptor  pd      = null;
     Method              getter  = null;
@@ -381,13 +286,7 @@ public class ObjectUtils extends ClassUtils
     return getter;
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static Method getWriteMethod ( Object obj, String name, Object value )
-  {
+  public static Method getWriteMethod( Object obj, String name, Object value ) {
     PropertyDescriptor  pd      = null;
     Method              setter  = null;
     String              msg     = null;
@@ -421,10 +320,6 @@ public class ObjectUtils extends ClassUtils
 
   // === [ Object Properties Getter and Setter ] ==========================
 
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static Object get ( Object obj, String name ) {
     Method  getter  = null;
     Object  value   = null;
@@ -462,11 +357,6 @@ public class ObjectUtils extends ClassUtils
 
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static void set ( Object obj, String name, Object value ) {
     Method  setter  = null;
     String  msg     = null;
@@ -486,9 +376,9 @@ public class ObjectUtils extends ClassUtils
       //         + " to value: '{}'",
       //           new Object[]{name,obj,getClsName(obj),value} );
       log.debug( String.format( "Set property '%s' to value: '%s' (class: '%s')"
-                              + " in object '%s' (class: '%s')",
+                              + " in class: '%s'",
                                 name, value, getClsName(value),
-                                obj, getClsName(obj) ) );
+                                getClsName(obj) ) );
 
     } catch ( RuntimeException re ) {
       log.error( "Unable to set property '{}' in object '{}' (class: '{}')"
@@ -508,9 +398,7 @@ public class ObjectUtils extends ClassUtils
   }
 
   /**
-   * TBD: Add documentation
    * TBD: Add an optional ErrorHandler arg (more below)
-   *
    */
   @SuppressWarnings( "unchecked" )
   public static Map get ( Object obj, Iterator keys, Map values ) {
@@ -531,18 +419,14 @@ public class ObjectUtils extends ClassUtils
   }
 
   /**
-   * TBD: Add documentation
    * TBD: Add an optional ErrorHandler arg (more below)
-   *
    */
   public static Map get ( Object obj, Collection keys ) {
     return get( obj, keys.iterator(), null );
   }
 
   /**
-   * TBD: Add documentation
    * TBD: Add an optional ErrorHandler arg (more below)
-   *
    */
   public static Map get ( Object obj, String ... keys ) {
     return get( obj, Arrays.asList(keys) );
@@ -550,7 +434,6 @@ public class ObjectUtils extends ClassUtils
 
 
   /**
-   * TBD: Add documentation
    * TBD: Add an optional ErrorHandler arg (more below)
    *      Note: If we have an ErrorHandler arg, then we
    *            could use it for property names that are
@@ -577,14 +460,9 @@ public class ObjectUtils extends ClassUtils
     }
   }
 
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static void set ( Object obj, Map values ) {
     set( obj, values, null );
   }
-
 
   // NOTE: The 'set' methods above implement the "pull-style" processing
   //       while the 'setAll' methods below implement the "push-style".
@@ -611,9 +489,7 @@ public class ObjectUtils extends ClassUtils
   //
 
   /**
-   * TBD: Add documentation
    * TBD: Add an optional ErrorHandler arg (more below)
-   *
    */
   public static void setAll ( Object obj, Map values ) {
     Object value = null;
@@ -625,9 +501,7 @@ public class ObjectUtils extends ClassUtils
   }
 
   /**
-   * TBD: Add documentation
    * TBD: Add an optional ErrorHandler arg (more below)
-   *
    */
   public static void setAll ( Object obj, Object[] ... values ) {
     String key    = null;
@@ -643,10 +517,6 @@ public class ObjectUtils extends ClassUtils
 
   // === [ Object Converter Methods ] =====================================
 
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static Class<?> normalizeType ( Class<?> type ) {
     if ( type == null )  return null;
     if ( type == Boolean.TYPE   || type == Boolean.class   ) return Boolean.class;
@@ -661,11 +531,6 @@ public class ObjectUtils extends ClassUtils
     return type;
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static Object toPrimitive ( Number obj, Class<?> type ) {
 
     // log.debug( "Converting Number instance '{}' to primitive type '{}'",
@@ -718,10 +583,6 @@ public class ObjectUtils extends ClassUtils
                             "unknown primitive type '" + type + "'" );
   }
 
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static Object toPrimitive ( String str, Class<?> type ) {
 
     //log.debug( "Converting string '{}' to primitive type '{}'", str, type );
@@ -767,10 +628,6 @@ public class ObjectUtils extends ClassUtils
                             "unknown primitive type '" + type + "'" );
   }
 
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static Object toPrimitive ( Object obj, Class<?> type ) {
     //log.debug( "Converting source object '{}' to primitive type '{}'",
     //           obj, type );
@@ -787,11 +644,6 @@ public class ObjectUtils extends ClassUtils
     return toPrimitive( obj.toString(), type );
   }
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
   public static Object toType ( Object obj, Class<?> type ) {
     //Class<?> cls = null;
 
@@ -840,64 +692,6 @@ public class ObjectUtils extends ClassUtils
     }
 
   }
-
-
-  // === [ Main Method (for testing only) ] ===============================
-  /* commented out as we separate bsg.util from isl.*
-  public static void main ( String[] args ) {
-    Class [] classes = { isl.model.ref.ConventionalCDModel.class,
-                         isl.model.ref.ExtendedCDModel.class,
-                       };
-    Object obj    = null;
-    Object value  = null;
-    Object[][] settings = { { "dn", "0.000" },
-                            { "k1", "0.111" },
-                            { "k2", "0.222" },
-                            { "ke", "0.333" },
-                            { "t",   0.444 },
-                            { "m",  new Double( 0.555 ) },  // new Float( 0.555 ) },
-                            { "q",  "0.555" },  // new Double( 0.666 ) },
-                            { "a",  new Complex( 1.0, 2.0 ) },
-                            { "b",  "0.123 + 0.555i" },
-                          };
-
-    Map<String,Object> settingsMap = new java.util.TreeMap<String,Object>();
-    for ( Object[] param : settings ) {
-      settingsMap.put( (String)param[0], param[1] );
-    }
-
-
-    for ( Class cls : classes ) {
-      try {
-        //log.debug( "\n{}\n", listPropertyDescriptors(cls) );
-
-        obj = cls.newInstance();
-
-        //for ( String key : getPropertyDescriptorMap(cls).keySet() ) {
-        //  value = get( obj, key );
-        //  log.debug( "Class '{}', property '{}', value: '{}'",
-        //             new Object[]{cls,key,value} );
-        //}
-
-        // for ( Object[] param : settings ) {
-        //   set( obj, (String)param[0], param[1] );
-        //   // log.debug( "Class '{}', property '{}' set to value: '{}'",
-        //   //            new Object[]{cls,param[0],param[1]} );
-        // }
-
-        //set( obj, settings );
-        set( obj, settingsMap );
-        //setAll( obj, settingsMap );
-
-      } catch ( Exception e ) {
-        log.error( "Unable to test get and set methods"
-                 + " for class '" + cls + "'", e );
-      }
-    }
-
-
-  }
-  */
 
 }  // end of ObjectUtils class
 

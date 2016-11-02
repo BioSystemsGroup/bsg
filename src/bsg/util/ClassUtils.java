@@ -7,7 +7,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  */
-
 package bsg.util;
 
 import java.lang.reflect.Constructor;
@@ -21,85 +20,71 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * TBD: Add class description
  *
- * @future
- *    - 
+ * @future -
  *
  * @author Ken Cline
  * @see Class
  * @since 1.0
- * @version $Revision: $  $Date: $
+ * @version $Revision: $ $Date: $
  *
  * $Id: $
  */
-public class ClassUtils
-{
+public class ClassUtils {
 
   // TBD: Add doc
-  private static final Logger log = LoggerFactory.getLogger( ClassUtils.class );
-
+  private static final Logger log = LoggerFactory.getLogger(ClassUtils.class);
 
   // === [ Class and Class Name Utilities ] ===============================
-
+  
   /**
-   * TBD: Add documentation
-   *
-   * Convenience method, mainly for logging and exception construction,
-   * so caller doesn't have to worry about NPEs
+   * Convenience method, mainly for logging and exception construction, so
+   * caller doesn't have to worry about NPEs
    */
-  public static Class<?> getClass ( Object obj ) {
+  public static Class<?> getClass(Object obj) {
     // Quick-n-dirty right now...  Might add more to this later
-    return ( obj == null ? null : obj.getClass() );
-  }
-
-
-  /**
-   * TBD: Add documentation
-   *
-   * Convenience method, mainly for logging and exception construction,
-   * so caller doesn't have to worry about NPEs
-   */
-  public static String getClsName ( Object obj ) {
-    // Quick-n-dirty right now...  Might add more to this later
-    return ( obj == null ? "null" : obj.getClass().getSimpleName() );
+    return (obj == null ? null : obj.getClass());
   }
 
   /**
-   * TBD: Add documentation
-   *
+   * Convenience method, mainly for logging and exception construction, so
+   * caller doesn't have to worry about NPEs
+   */
+  public static String getClsName(Object obj) {
+    // Quick-n-dirty right now...  Might add more to this later
+    return (obj == null ? "null" : obj.getClass().getSimpleName());
+  }
+
+  /**
    * Checks if string is a fully-qualified class name
    */
-  public static boolean isFQN ( String name ) {
+  public static boolean isFQN(String name) {
     // Quick-n-dirty right now...  Might add more to this later
-    return ( name == null ? false : name.indexOf('.') >= 0 );
+    return (name == null ? false : name.indexOf('.') >= 0);
   }
-    // TBD: Other than verifying that name contains a '.', what else
-    //      should we do to check if the name is fully-qualified?
-    //      We could check if the class exists using Class.forName
-    //      or ClassLoader.findClass.  But if that fails, does it
-    //      necessarily imply that the name is not fully-qualified?
+  // TBD: Other than verifying that name contains a '.', what else
+  //      should we do to check if the name is fully-qualified?
+  //      We could check if the class exists using Class.forName
+  //      or ClassLoader.findClass.  But if that fails, does it
+  //      necessarily imply that the name is not fully-qualified?
 
-    // TBD: Perhaps we should just call this method 'containsDot'
-    //      (and move it to the StringUtils class) because that's
-    //      a better definition of what we are doing.
-
-    // TBD: And/Or perhaps we should change this method to be
-    //      ISL specific: i.e. check if the class name starts with
-    //      "isl.".  If so, then should this method be called
-    //      something like: isISLClassName ?
-
+  // TBD: Perhaps we should just call this method 'containsDot'
+  //      (and move it to the StringUtils class) because that's
+  //      a better definition of what we are doing.
+  // TBD: And/Or perhaps we should change this method to be
+  //      ISL specific: i.e. check if the class name starts with
+  //      "isl.".  If so, then should this method be called
+  //      something like: isISLClassName ?
   /**
    * TBD: Add documentation
    *
    */
-  public static boolean isInstanceOfAny ( Object obj, Class<?> ... classes )
-  {
+  public static boolean isInstanceOfAny(Object obj, Class<?>... classes) {
 
-    for ( Class<?> cls : classes ) {
-      if ( cls.isInstance(obj) ) {
+    for (Class<?> cls : classes) {
+      if (cls.isInstance(obj)) {
         //log.debug( "Object '{}' is an instance of '{}' -- returning true",
         //           obj, cls );
         return true;
@@ -111,23 +96,18 @@ public class ClassUtils
     return false;
   }
 
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static boolean isInstanceOfAll ( Object obj, Class<?> ... classes )
-  {
+  public static boolean isInstanceOfAll(Object obj, Class<?>... classes) {
 
-    for ( Class<?> cls : classes ) {
-      if ( ! cls.isInstance(obj) ) {
-        log.debug( "Object '{}' is NOT an instance of '{}' -- returning false",
-                   obj, cls );
+    for (Class<?> cls : classes) {
+      if (!cls.isInstance(obj)) {
+        log.debug("Object '{}' is NOT an instance of '{}' -- returning false",
+                obj, cls);
         return false;
       }
     }
 
-    log.debug( "Object '{}' is an instance of all specified classes: {}",
-               obj, classes );
+    log.debug("Object '{}' is an instance of all specified classes: {}",
+            obj, classes);
     return true;
   }
 
@@ -139,55 +119,42 @@ public class ClassUtils
   //
   //      Once again I have all this code sitting on CDs somewhere, written
   //      year ago.  I need to look for ASAP. [sigh]
-
-
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static Class<?> findClass ( String pkg, String name )
-                            throws ClassNotFoundException
-  {
+  public static Class<?> findClass(String pkg, String name)
+          throws ClassNotFoundException {
     Class<?> cls = null;
 
-    if ( ! isFQN(name) ) {
-      if ( StringUtils.isNotEmpty(pkg) ) {
+    if (!isFQN(name)) {
+      if (StringUtils.isNotEmpty(pkg)) {
         //log.debug( "Provided class name '{}' is not fully qualified"
         //         + " -- prepending package name provided as context: '{}'",
         //           name, pkg );
         name = pkg + '.' + name;
       } else {
-        log.warn( "Unable to create a fully qualified class name"
+        log.warn("Unable to create a fully qualified class name"
                 + " -- No parent package provided as context;"
                 + " attempting to find class using unqualified name: '{}'",
-                  name );
+                name);
       }
     }
 
-    cls = Class.forName( name );
+    cls = Class.forName(name);
     //log.debug( "Found class for name '{}' and package '{}'", name, pkg );
 
     return cls;
   }  // end --  findClass( String pkg, String name )
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static Class<?> findClass ( Object ctx, String name )
-                            throws ClassNotFoundException
-  {
+  public static Class<?> findClass(Object ctx, String name)
+          throws ClassNotFoundException {
     //log.debug( "Searching for class with context: '{}' and name: '{}'",
     //           ctx, name );
 
     // TBD: Should we check if name is fully qualified and, if so,
     //      skip the remainder of this method?
-    if ( isFQN(name) ) {
-      return findClass( "", name );
+    if (isFQN(name)) {
+      return findClass("", name);
     }
 
-    if ( ctx == null ) {
+    if (ctx == null) {
       // TBD: Once I complete the 'getCallerClass' method, then we can
       //      dynamically determine the package of the caller and
       //      assume that non-fully-qualified names should belong to
@@ -198,118 +165,98 @@ public class ClassUtils
       ctx = "";
     }
 
-    if ( ctx instanceof String ) {
-      return findClass( (String)ctx, name );
+    if (ctx instanceof String) {
+      return findClass((String) ctx, name);
     }
 
     // For any context object _other_ than a Class or Package,
     // get the object's class
-    if ( ! isInstanceOfAny(ctx,Class.class,Package.class) ) {
+    if (!isInstanceOfAny(ctx, Class.class, Package.class)) {
       ctx = ctx.getClass();
     }
 
     // If context is a class, then get its parent package
-    if ( ctx instanceof Class ) {
-      ctx = ((Class)ctx).getPackage();
+    if (ctx instanceof Class) {
+      ctx = ((Class) ctx).getPackage();
     }
 
     // If context is a package, then get its name
-    if ( ctx instanceof Package ) {
-      ctx = ((Package)ctx).getName();
+    if (ctx instanceof Package) {
+      ctx = ((Package) ctx).getName();
     }
 
     // No matter what we started with, the context object should now
     // be a string by the time we get here; but just in case...
-    if ( ! (ctx instanceof String) ) {
+    if (!(ctx instanceof String)) {
       ctx = ctx.toString();
     }
 
-    return findClass( (String)ctx, name );
+    return findClass((String) ctx, name);
 
   }  // end --  findClass( Object ctx, String name )
 
-
   // === [ Factory (Instance Construction) Methods ] ======================
-
   // TBD: Do these method belong in Class utilities or Object utilities?
   //      I originally put them in ObjectUtils, but then decided to move
   //      them to ClassUtils... I might move them back.
-
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static Object createInstance ( Class<?> cls, Class [] types,
-                                        Object ... args )
-                               throws NoSuchMethodException,
-                                      InstantiationException,
-                                      IllegalAccessException,
-                                      InvocationTargetException
-  {
-    Constructor  cnstr  = null;
-    String       msg    = null;
+  public static Object createInstance(Class<?> cls, Class[] types,
+          Object... args)
+          throws NoSuchMethodException,
+          InstantiationException,
+          IllegalAccessException,
+          InvocationTargetException {
+    Constructor cnstr = null;
+    String msg = null;
 
     //log.debug( "Creating instance of '{}' with args: {} (types: {})",
     //           new Object[]{cls,args,types} );
-
-    cnstr = cls.getConstructor( types );
+    cnstr = cls.getConstructor(types);
 
     // TBD: Check if args.length == types.length
     //      If shorter, then fill with null.
     //      If longer, then throw an exception.
-
     // TBD: Check if args[i].class instanceof types[i] for each i
     //      If not assignable class, then use 'toType' to convert.
     //      If we add this, then we need to check for recursion,
     //      i.e. toType --> ... --> createInstance --> toType --> ...
-
-    return cnstr.newInstance( args );
+    return cnstr.newInstance(args);
 
   }  // end --  createInstance( Class<?> cls, Class [] types, Object ... args )
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static Object createInstance ( Class<?> cls, Object ... args )
-                               throws NoSuchMethodException,
-                                      InstantiationException,
-                                      IllegalAccessException,
-                                      InvocationTargetException
-  {
-    Class []  types  = null;
-    String    msg    = null;
-    int       n      = ( args == null ? 0 : args.length );
-    Object    arg    = null;
-    boolean   allStrings = true;
+  public static Object createInstance(Class<?> cls, Object... args)
+          throws NoSuchMethodException,
+          InstantiationException,
+          IllegalAccessException,
+          InvocationTargetException {
+    Class[] types = null;
+    String msg = null;
+    int n = (args == null ? 0 : args.length);
+    Object arg = null;
+    boolean allStrings = true;
 
     //log.debug( "Creating instance of '{}' with args: {}", cls, args );
-
-    types = new Class[ n ];
-    for ( int i = 0 ; i < n ; i++ ) {
-      if ( args[ i ] == null ) {
+    types = new Class[n];
+    for (int i = 0; i < n; i++) {
+      if (args[i] == null) {
         msg = "Unable to create instance of '" + cls + "'"
-            + " -- Constructor parameter type can not be determined"
-            + " for arg " + i + " (null)";
-        throw new IllegalArgumentException( msg );
+                + " -- Constructor parameter type can not be determined"
+                + " for arg " + i + " (null)";
+        throw new IllegalArgumentException(msg);
       }
-      types[ i ] = args[ i ].getClass();
-      allStrings = ( allStrings && (types[i] == String.class) );
+      types[i] = args[i].getClass();
+      allStrings = (allStrings && (types[i] == String.class));
     }
 
     // If all the arguments are Strings then we just take one shot
     // at finding the constructor and creating a new instance...
-
-    if ( allStrings ) {
-      return createInstance( cls, types, args );
+    if (allStrings) {
+      return createInstance(cls, types, args);
     }
 
     // ... Otherwise, we'll try to find the constructor with a
     // signature that most closely matches the provided argument
     // list.  If no matching constructor is found, then we'll
     // try to find a constructor that takes all strings instead.
-
     // TBD: If we wanted to be a little more clever, we could
     //      convert elements from args one at a time to a String
     //      and after each conversion try to find a constructor.
@@ -321,99 +268,70 @@ public class ClassUtils
     //      the 'allStrings' flag.  Perhaps use a local variable
     //      to store the last (or first?) exception and then
     //      after the loop just throw that exception...
-
     try {
-      return createInstance( cls, types, args );
-    } catch ( NoSuchMethodException nsme ) {
-      log.debug( "Unable to create a new instance of '{}'"
-               + " with args: {} (types: {}) -- Error: {};"
-               + " converting args to strings and trying again...",
-                 new Object[]{cls,args,types,nsme} );
+      return createInstance(cls, types, args);
+    } catch (NoSuchMethodException nsme) {
+      log.debug("Unable to create a new instance of '{}'"
+              + " with args: {} (types: {}) -- Error: {};"
+              + " converting args to strings and trying again...",
+              new Object[]{cls, args, types, nsme});
     }
 
-    for ( int i = 0 ; i < n ; i++ ) {
-      arg = args[ i ];
-      types[ i ] = String.class;
-      if ( arg == null || arg instanceof String ) {
+    for (int i = 0; i < n; i++) {
+      arg = args[i];
+      types[i] = String.class;
+      if (arg == null || arg instanceof String) {
         continue;
       }
       arg = arg.toString();
-      args[  i ] = arg;
-      types[ i ] = ( arg == null ? String.class : arg.getClass() );
+      args[i] = arg;
+      types[i] = (arg == null ? String.class : arg.getClass());
       // Should we just trust that 'toString' returns a String ???
     }
 
-    return createInstance( cls, types, args );
+    return createInstance(cls, types, args);
 
   }  // end --  createInstance( Class<?> cls, Object ... args )
 
-
-  /**
-   * TBD: Add documentation
-   *
-   */
-  public static Object createInstance ( String name, Object ... args )
-                               throws NoSuchMethodException,
-                                      InstantiationException,
-                                      IllegalAccessException,
-                                      InvocationTargetException,
-                                      ClassNotFoundException
-  {
-    return createInstance( findClass(null,name), args );
+  public static Object createInstance(String name, Object... args)
+          throws NoSuchMethodException,
+          InstantiationException,
+          IllegalAccessException,
+          InvocationTargetException,
+          ClassNotFoundException {
+    return createInstance(findClass(null, name), args);
   }
 
-
   // === [ Resource Find/Lookup Methods ] =================================
-
-
-  /**
-   * TBD: Move this to an IO Utilities class and put that class in
-   *      in a utilities package
-   * TBD: Add documentation
-   */
-  public static File getResourceFile ( String name, Class ref )
-                              throws IOException
-  {
+  public static File getResourceFile(String name, Class ref)
+          throws IOException {
     ClassLoader clsLoader = null;
     URL url = null;
 
-    log.debug( "Searching for resource file '{}' in CLASSPATH", name );
+    log.debug("Searching for resource file '{}' in CLASSPATH", name);
 
-    clsLoader = ( ref != null ? ref.getClassLoader()
-                              : ClassLoader.getSystemClassLoader() );
-    url = clsLoader.getResource( name );
-    if ( url == null ) {
-      throw new FileNotFoundException( "Resource file '" + name + "'"
-                                     + " not found in CLASSPATH" );
+    clsLoader = (ref != null ? ref.getClassLoader()
+            : ClassLoader.getSystemClassLoader());
+    url = clsLoader.getResource(name);
+    if (url == null) {
+      throw new FileNotFoundException("Resource file '" + name + "'"
+              + " not found in CLASSPATH");
     }
 
-    log.debug( "Path to resource file: '{}'", url.getPath() );
-    return new File( url.getPath() );
+    log.debug("Path to resource file: '{}'", url.getPath());
+    return new File(java.net.URLDecoder.decode(url.getPath()));
   }
 
-  /**
-   * TBD: Move this to an IO Utilities class and put that class in
-   *      in a utilities package
-   * TBD: Add documentation
-   */
-  public static File getResourceFile ( String name, Object ref )
-                              throws IOException
-  {
-    return getResourceFile( name, (Class)(ref != null ? ref.getClass() : null) );
+  public static File getResourceFile(String name, Object ref)
+          throws IOException {
+    return getResourceFile(name, (Class) (ref != null ? ref.getClass() : null));
   }
 
-  /**
-   * TBD: Move this to an IO Utilities class and put that class in
-   *      in a utilities package
-   * TBD: Add documentation
-   */
-  public static File getResourceFile ( String name ) throws IOException {
-    return getResourceFile( name, (Class)null );
+  public static File getResourceFile(String name) throws IOException {
+    return getResourceFile(name, (Class) null);
   }
-
 
   // === [ Caller Lookup Methods ] ========================================
-
   // NOTE: This code was originally in the CSVDataModel class and then
   //       moved to the LoggingUtil class.  However these utilities
   //       are more general than that so I think they belong in either
@@ -433,8 +351,7 @@ public class ClassUtils
   //       capability in place other than initialization/loading,
   //       exporting/saving, or disable-able/optional code such as
   //       debug statements.
-
-  public static Class<?> getCallerClass ( Class<?> cls, int offset ) {
+  public static Class<?> getCallerClass(Class<?> cls, int offset) {
     // TBD: This method will get the entire call stack and search
     //      "backwards" (ie from most recent stack element) until
     //      it finds the occurence of the specified class, 'cls'.
@@ -450,7 +367,6 @@ public class ClassUtils
     //      on some criteria, e.g. in this case we want to collapse
     //      all stack _consecutive_ elements with the same class
     //      name into a single entry.
-
     // TBD: Create an enum for specifying relative offsets for
     //      elements in a sequential data structure, e.g. List,
     //      array, etc.
@@ -461,280 +377,85 @@ public class ClassUtils
     //
     //      We might be about to use these with Map, especially
     //      sorted map structures as well.
-
-    throw new UnsupportedOperationException( "No yet implemented" );
+    throw new UnsupportedOperationException("No yet implemented");
   }
 
-  public static Class<?> getCallerClass ( int depth ) {
-  //   // Add 2 to depth:
-  //   //    +1 for this method, ie LoggingUtils.getCallerClass(int)
-  //   //    +1 for the sun.reflect.Reflection.getCallerClass(int) method
-  //   // Therefore, if method called with depth = 0, the class returned
-  //   // is the caller of this method.  If the depth = 1, then the
-  //   // class returned is the caller of the caller of this method,
-  //   // i.e. what is typically wanted.
-  //   // If depth > stack depth, then null is returned.
-  //   return sun.reflect.Reflection.getCallerClass( depth + 2 );
-    throw new UnsupportedOperationException( "No yet implemented" );
+  public static Class<?> getCallerClass(int depth) {
+    //   // Add 2 to depth:
+    //   //    +1 for this method, ie LoggingUtils.getCallerClass(int)
+    //   //    +1 for the sun.reflect.Reflection.getCallerClass(int) method
+    //   // Therefore, if method called with depth = 0, the class returned
+    //   // is the caller of this method.  If the depth = 1, then the
+    //   // class returned is the caller of the caller of this method,
+    //   // i.e. what is typically wanted.
+    //   // If depth > stack depth, then null is returned.
+    //   return sun.reflect.Reflection.getCallerClass( depth + 2 );
+    throw new UnsupportedOperationException("No yet implemented");
   }
 
-  public static Class<?> getCallerClass () {
+  public static Class<?> getCallerClass() {
     // Returns the caller of the caller of this method, so we need to
     // add 2:
     //    +1 for this method, ie LoggingUtils.getCallerClass()
     //    +1 for the caller of this method
-    return getCallerClass( 2 );
+    return getCallerClass(2);
   }
 
-  // Testing:
-  //   0 = sun.reflect.Reflection
-  //   1 = isl.model.data.LoggingUtils (ie this class) in getCallerClass(int)
-  //   2 = isl.model.data.LoggingUtils (ie this class) in getCallerClass()
-  //         (ie this method)
-  //   3 = the caller of this method   (ie the class that wants to know who
-  //          the caller is)
-  //   4 = the caller of the caller of this method
-  //   for ( int i = 0 ; i < 5 ; i++ ){
-  //     log.debug( "{}: Caller class: {}", i, getCallerClass(i) );
-  //   }
-
-  // Testing code moved out of CSVDataModel, put in unit test
-  // public static void testGetCallerClass () {
-  //   for ( int i = 0 ; i < 5 ; i++ ){
-  //     System.out.println( i + ": Caller class: "
-  //                         + isl.model.data.LoggingUtils.getCallerClass(i)
-  //                         + " ( w/o arg: "
-  //                         + isl.model.data.LoggingUtils.getCallerClass()
-  //                         + " )" );
-  //   }
-  // }
-  // 
-  // /**
-  //  * TBD: Add doc
-  //  *
-  //  */
-  // public static void main ( String[] args ) {
-  // 
-  //   testGetCallerClass();
-  // 
-  //   Object foo = new Object () {
-  //       public String toString () {
-  //         CSVDataModel.testGetCallerClass();
-  //         return "";
-  //       }
-  //     };
-  //   System.out.println();
-  //   foo.toString();
-  // 
-  //   System.exit( 0 );
-  // 
-  // }
-
-  // TBD: To avoid the compiler warnings, the use of sun.reflect.Reflection
-  //      needs to wrappered in reflection Method object.  This also allows
-  //      us to determine at runtime if that internal, proprietary Sun class
-  //      is available.  If it is not available, we should use one of the
-  //      other techniques (see below) for getting the caller Class.
-  //      In essence we need a factory method that returns an invokeable
-  //      Method that we can use to get the caller.  If available that
-  //      Method forwards to sun.reflect.Reflection.getCallerClass, otherwise
-  //      some other lookup method is called.
-
-
   // === [ Main Method (for testing only) ] ===============================
+  public static void main(String[] args) {
+    String[] names = {"isl.model.ref.ConventionalCDModel",
+      "isl.model.ref.ExtendedCDModel",};
+    Object[] params = null;
+    String pkgName = null;
+    String clsName = null;
+    Package pkg = null;
+    Class cls = null;
+    Object obj = null;
 
-  /**
-   * TBD: Add doc
-   *
-   */
-  public static void main ( String[] args ) {
-    String []  names   = { "isl.model.ref.ConventionalCDModel",
-                           "isl.model.ref.ExtendedCDModel",
-                         };
-    Object []  params   = null;
-    String     pkgName  = null;
-    String     clsName  = null;
-    Package    pkg      = null;
-    Class      cls      = null;
-    Object     obj      = null;
-
-    for ( String name : names ) {
+    for (String name : names) {
       try {
-        pkgName = name.substring( 0, name.lastIndexOf('.') );
-        clsName = name.substring( pkgName.length() + 1 );
+        pkgName = name.substring(0, name.lastIndexOf('.'));
+        clsName = name.substring(pkgName.length() + 1);
 
-        pkg = Package.getPackage( pkgName );
-        cls = Class.forName( name );
+        pkg = Package.getPackage(pkgName);
+        cls = Class.forName(name);
 
         // HACK
-        if ( pkg == null && cls != null ) {
+        if (pkg == null && cls != null) {
           pkg = cls.getPackage();
         }
 
-        log.debug( "Name: '{}', package name: '{}', class name: '{}',"
-                 + " package object: '{}', class object: '{}'",
-                   new Object[]{name,pkgName,clsName,pkg,cls} );
+        log.debug("Name: '{}', package name: '{}', class name: '{}',"
+                + " package object: '{}', class object: '{}'",
+                new Object[]{name, pkgName, clsName, pkg, cls});
 
         // Without constructor params
-        obj = createInstance( Class.forName(name) );
-        obj = createInstance( name );
-        obj = createInstance( findClass( pkgName,  name    ) );
-        obj = createInstance( findClass( pkgName,  clsName ) );
+        obj = createInstance(Class.forName(name));
+        obj = createInstance(name);
+        obj = createInstance(findClass(pkgName, name));
+        obj = createInstance(findClass(pkgName, clsName));
         obj = pkgName;
-        obj = createInstance( findClass( obj,      clsName ) );
-        obj = createInstance( findClass( pkg,      clsName ) );
-        obj = createInstance( findClass( cls,      clsName ) );
-        obj = createInstance( findClass( obj,      clsName ) );
+        obj = createInstance(findClass(obj, clsName));
+        obj = createInstance(findClass(pkg, clsName));
+        obj = createInstance(findClass(cls, clsName));
+        obj = createInstance(findClass(obj, clsName));
 
         // With constructor params
-        obj = createInstance( Class.forName(name), params );
-        obj = createInstance( name, params );
-        obj = createInstance( findClass( pkgName,  name    ), params );
-        obj = createInstance( findClass( pkgName,  clsName ), params );
+        obj = createInstance(Class.forName(name), params);
+        obj = createInstance(name, params);
+        obj = createInstance(findClass(pkgName, name), params);
+        obj = createInstance(findClass(pkgName, clsName), params);
         obj = pkgName;
-        obj = createInstance( findClass( obj,      clsName ), params );
-        obj = createInstance( findClass( pkg,      clsName ), params );
-        obj = createInstance( findClass( cls,      clsName ), params );
-        obj = createInstance( findClass( obj,      clsName ), params );
+        obj = createInstance(findClass(obj, clsName), params);
+        obj = createInstance(findClass(pkg, clsName), params);
+        obj = createInstance(findClass(cls, clsName), params);
+        obj = createInstance(findClass(obj, clsName), params);
 
-      } catch ( Exception e ) {
-        log.error( "Failed creating instance of '" + name + "' -- Error: ", e );
+      } catch (Exception e) {
+        log.error("Failed creating instance of '" + name + "' -- Error: ", e);
       }
     }
 
   }
 
-
 }  // end of ClassUtils class
-
-
-
-// More stuff related to Caller Lookup
-// ===================================
-// From: http://stackoverflow.com/questions/421280/in-java-how-do-i-find-the-caller-of-a-method-using-stacktrace-or-reflection
-//
-// 
-// /**
-//  * Test the speed of various methods for getting the caller class name
-//  */
-// public class TestGetCallerClassName {
-// 
-//   /**
-//    * Abstract class for testing different methods of getting the caller class name
-//    */
-//   private static abstract class GetCallerClassNameMethod {
-//       public abstract String getCallerClassName(int callStackDepth);
-//       public abstract String getMethodName();
-//   }
-// 
-//   /**
-//    * Uses the internal Reflection class
-//    */
-//   private static class ReflectionMethod extends GetCallerClassNameMethod {
-//       public String getCallerClassName(int callStackDepth) {
-//           return sun.reflect.Reflection.getCallerClass(callStackDepth).getName();
-//       }
-// 
-//       public String getMethodName() {
-//           return "Reflection";
-//       }
-//   }
-// 
-//   /**
-//    * Get a stack trace from the current thread
-//    */
-//   private static class ThreadStackTraceMethod extends GetCallerClassNameMethod {
-//       public String  getCallerClassName(int callStackDepth) {
-//           return Thread.currentThread().getStackTrace()[callStackDepth].getClassName();
-//       }
-// 
-//       public String getMethodName() {
-//           return "Current Thread StackTrace";
-//       }
-//   }
-// 
-//   /**
-//    * Get a stack trace from a new Throwable
-//    */
-//   private static class ThrowableStackTraceMethod extends GetCallerClassNameMethod {
-// 
-//       public String getCallerClassName(int callStackDepth) {
-//           return new Throwable().getStackTrace()[callStackDepth].getClassName();
-//       }
-// 
-//       public String getMethodName() {
-//           return "Throwable StackTrace";
-//       }
-//   }
-// 
-//   /**
-//    * Use the SecurityManager.getClassContext()
-//    */
-//   private static class SecurityManagerMethod extends GetCallerClassNameMethod {
-//       public String  getCallerClassName(int callStackDepth) {
-//           return mySecurityManager.getCallerClassName(callStackDepth);
-//       }
-// 
-//       public String getMethodName() {
-//           return "SecurityManager";
-//       }
-// 
-//       /** 
-//        * A custom security manager that exposes the getClassContext() information
-//        */
-//       static class MySecurityManager extends SecurityManager {
-//           public String getCallerClassName(int callStackDepth) {
-//               return getClassContext()[callStackDepth].getName();
-//           }
-//       }
-// 
-//       private final static MySecurityManager mySecurityManager =
-//           new MySecurityManager();
-//   }
-// 
-//   /**
-//    * Test all four methods
-//    */
-//   public static void main(String[] args) {
-//       testMethod(new ReflectionMethod());
-//       testMethod(new ThreadStackTraceMethod());
-//       testMethod(new ThrowableStackTraceMethod());
-//       testMethod(new SecurityManagerMethod());
-//   }
-// 
-//   private static void testMethod(GetCallerClassNameMethod method) {
-//       long startTime = System.nanoTime();
-//       String className = null;
-//       for (int i = 0; i < 1000000; i++) {
-//           className = method.getCallerClassName(2);
-//       }
-//       printElapsedTime(method.getMethodName(), startTime);
-//       System.out.println(className);
-//   }
-// 
-//   private static void printElapsedTime(String title, long startTime) {
-//       System.out.println(title + ": " + ((double)(System.nanoTime() - startTime))/1000000 + " ms.");
-//   }
-// }
-//
-// An example of the output from my 2.4 GHz Intel Core 2 Duo MacBook running Java 1.6.0_17:
-// 
-// Reflection: 10.195 ms.
-// TestGetCallerClassName
-// Current Thread StackTrace: 5886.964 ms.
-// TestGetCallerClassName
-// Throwable StackTrace: 4700.073 ms.
-// TestGetCallerClassName
-// SecurityManager: 1046.804 ms.
-// TestGetCallerClassName
-// 
-// The internal Reflection method is much faster than the others. Getting a stack trace from a newly created Throwable is faster than getting it from the current Thread. And among the non-internal ways of finding the caller class the custom SecurityManager seems to be the fastest.
-//  
-//
-// NOTE: I was familiar with -- and had actually previously implemented --
-//       the stack trace technique for getting the caller class.  The
-//       other technique were new to me but I had never really looked
-//       into it nor performed any performance testing.
-//
-
-
