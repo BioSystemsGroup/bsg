@@ -1,3 +1,7 @@
+2017-02-24-14:51  gepr  <gepr@tempusdictum.com>
+
+	* CollectionUtils.java(deepCopy(), add()): New methods to create a deep copy of a HashMap and add 2 HashMaps into a newly constructed HashMap.
+
 2016-11-02-16:24  gepr  <gepr@tempusdictum.com>
 
 	* ClassUtils, CollectionUtils, ObjectUtils, StringUtils: Reformatted and removed some TBD comments.

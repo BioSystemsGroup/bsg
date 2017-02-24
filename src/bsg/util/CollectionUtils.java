@@ -251,6 +251,23 @@ public class CollectionUtils {
     return d.toString();
   }
 
+  public static Map<String,Number> deepCopy(Map<String,Number> m) {
+    Map<String,Number> retVal = new java.util.HashMap<>();
+    for (Map.Entry<String,Number> me : m.entrySet()) {
+      Number src = me.getValue();
+      Number dst = null;
+      if (src instanceof MutableInt) 
+        dst = new MutableInt(src.intValue());
+      else if (src instanceof Double || src instanceof Float)
+        dst = src.doubleValue();
+      else if (src instanceof Integer || src instanceof Long)
+        dst = src.longValue();
+      else throw new RuntimeException("Did not recognize type of "+me.getValue());
+      retVal.put(me.getKey(),dst);
+    }
+    return retVal;
+  }
+  
   /**
    * Add the <key,value> contents of the giver into the receiver. If there are
    * entries in the receiver that don't exist in the giver, they'll stay the
@@ -277,6 +294,26 @@ public class CollectionUtils {
     }
   }
 
+  /**
+   * Construct a new HashMap<String,Number> by using addIn on the operands.
+   * @param op1
+   * @param op2
+   * @return 
+   */
+  public static Map<String,Number> add(Map<String,Number> op1, Map<String,Number> op2) {
+    Map<String,Number> retVal = null;
+    if (op1 == null || op1.isEmpty()) {
+      if (op2 == null) throw new NullPointerException("Both Maps are null or empty.");
+      else retVal = deepCopy(op2);
+    } else if (op2 == null || op2.isEmpty()) {
+      retVal = deepCopy(op1);
+    } else {
+      retVal = deepCopy(op1);
+      addIn(retVal,op2);
+    }
+    return retVal;
+  }
+  
   public static void main(String[] args) {
     java.util.ArrayList<Integer> al = new java.util.ArrayList<>();
     for (int i = 0; i < 10; i++) al.add(i);
@@ -300,5 +337,21 @@ public class CollectionUtils {
     System.out.print(CollectionUtils.describe(r) + " + " + CollectionUtils.describe(g) + " = ");
     CollectionUtils.addIn(r, g);
     System.out.println(CollectionUtils.describe(r));
+    
+    Map<String,Number> one = null, two = null;
+    
+   one = new java.util.HashMap<>();
+   two = new java.util.HashMap<>();
+   for (int i=0 ; i<3 ; i++) {
+     String key = "i_"+i;
+     one.put(key, new MutableInt(i));
+     two.put(key, Math.E);
+   }
+   System.out.println("one = "+CollectionUtils.describe(one));
+   System.out.println("two = "+CollectionUtils.describe(two));
+   Map<String,Number> result1 = CollectionUtils.add(one,two);
+   System.out.println("result1 = "+CollectionUtils.describe(result1));
+   Map<String,Number> result2 = CollectionUtils.add(two,one);
+   System.out.println("result2 = "+CollectionUtils.describe(result2));
   }
 }  // end of CollectionUtils class
