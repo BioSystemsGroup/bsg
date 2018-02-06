@@ -1,3 +1,12 @@
+2018-02-06-15:31  gepr  <gepr@tempusdictum.com>
+
+	* CollectionUtils.java (subFrom(), sub()): New methods to subtract one map from another.
+	(main()): Add tests for subtraction.
+
+2018-02-06-15:27  gepr  <gepr@tempusdictum.com>
+
+	* CollectionUtils.java (countType[s]() → countObjects[Of|By]Type()): Rename methods to be more semantically accurate.
+
 2017-02-24-14:51  gepr  <gepr@tempusdictum.com>
 
 	* CollectionUtils.java(deepCopy(), add()): New methods to create a deep copy of a HashMap and add 2 HashMaps into a newly constructed HashMap.

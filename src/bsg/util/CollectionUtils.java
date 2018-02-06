@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2016 - Regents of the University of California, San
+ * Copyright 2003-2018 - Regents of the University of California, San
  * Francisco.
  *
  * This program is distributed in the hope that it will be useful, but
@@ -188,7 +188,7 @@ public class CollectionUtils {
     return retVal;
   }
 
-  public static Map<String, Number> countTypes(java.util.ArrayList<? extends TypeString> al) {
+  public static Map<String, Number> countObjectsByType(java.util.List<? extends TypeString> al) {
     LinkedHashMap<String, Number> types = null;
     if (al != null) {
       types = new LinkedHashMap<>();
@@ -200,7 +200,7 @@ public class CollectionUtils {
     return types;
   }
 
-  public static int countType(java.util.ArrayList<? extends TypeString> al, String type) {
+  public static int countObjectsOfType(java.util.ArrayList<? extends TypeString> al, String type) {
     int retVal = 0;
     if (al != null)
       retVal = al.stream().filter((s) -> (s.getType().equals(type))).map((_item) -> 1).reduce(retVal, Integer::sum);
@@ -273,7 +273,8 @@ public class CollectionUtils {
    * entries in the receiver that don't exist in the giver, they'll stay the
    * same. If there are entries in the giver that don't exist in the receiver,
    * they'll be inserted. If the receiver is double or float, doubleValue() is
-   * used. Everything else uses longValue() to produce Long.
+   * used. Everything else uses longValue() to produce Long. Note that if the 
+   * giver is real but the receiver integer, it adds then truncates.
    *
    * @param receiver
    * @param giver
@@ -290,6 +291,27 @@ public class CollectionUtils {
           receiver.put(me.getKey(), n.longValue() + me.getValue().longValue());
       } else {
         receiver.put(me.getKey(), me.getValue());
+      }
+    }
+  }
+  
+  /**
+   * Subtract loss from the loser. Works the same as addIn().
+   * @param loser
+   * @param loss 
+   */
+  public static void subFrom(Map<String, Number> loser, Map<String, Number> loss) {
+    for (Map.Entry<String, Number> me : loss.entrySet()) {
+      if (loser.containsKey(me.getKey())) {
+        Number n = loser.get(me.getKey());
+        if (n instanceof MutableInt) 
+          ((MutableInt) n).sub(me.getValue().intValue());
+        else if (n instanceof Double || n instanceof Float)
+          loser.put(me.getKey(), n.doubleValue() - me.getValue().doubleValue());
+        else 
+          loser.put(me.getKey(), n.longValue() - me.getValue().longValue());
+      } else {
+        loser.put(me.getKey(), me.getValue());
       }
     }
   }
@@ -313,7 +335,26 @@ public class CollectionUtils {
     }
     return retVal;
   }
-  
+  /**
+   * Construct a new HashMap<String,Number> by using subFrom on the operands.
+   * @param op1
+   * @param op2
+   * @return 
+   */
+  public static Map<String,Number> sub(Map<String,Number> op1, Map<String,Number> op2) {
+    Map<String,Number> retVal = null;
+    if (op1 == null || op1.isEmpty()) {
+      if (op2 == null) throw new NullPointerException("Both Maps are null or empty.");
+      else retVal = deepCopy(op2);
+    } else if (op2 == null || op2.isEmpty()) {
+      retVal = deepCopy(op1);
+    } else {
+      retVal = deepCopy(op1);
+      subFrom(retVal,op2);
+    }
+    return retVal;
+  }
+
   public static void main(String[] args) {
     java.util.ArrayList<Integer> al = new java.util.ArrayList<>();
     for (int i = 0; i < 10; i++) al.add(i);
@@ -342,16 +383,17 @@ public class CollectionUtils {
     
    one = new java.util.HashMap<>();
    two = new java.util.HashMap<>();
+   String[] subs = {"₀","₁","₂"};
    for (int i=0 ; i<3 ; i++) {
-     String key = "i_"+i;
+     String key = "i"+subs[i];
      one.put(key, new MutableInt(i));
      two.put(key, Math.E);
    }
-   System.out.println("one = "+CollectionUtils.describe(one));
-   System.out.println("two = "+CollectionUtils.describe(two));
-   Map<String,Number> result1 = CollectionUtils.add(one,two);
-   System.out.println("result1 = "+CollectionUtils.describe(result1));
-   Map<String,Number> result2 = CollectionUtils.add(two,one);
-   System.out.println("result2 = "+CollectionUtils.describe(result2));
+   System.out.println("ū = "+CollectionUtils.describe(one));
+   System.out.println("ē = "+CollectionUtils.describe(two));
+   System.out.println("ū+ē = "+CollectionUtils.describe(CollectionUtils.add(one,two)));
+   System.out.println("ū-ē = "+CollectionUtils.describe(CollectionUtils.sub(one,two)));
+   System.out.println("ē+ū = "+CollectionUtils.describe(CollectionUtils.add(two,one)));
+   System.out.println("ē-ū = "+CollectionUtils.describe(CollectionUtils.sub(two,one)));
   }
 }  // end of CollectionUtils class
