@@ -200,7 +200,7 @@ public class CollectionUtils {
     return types;
   }
 
-  public static int countObjectsOfType(java.util.ArrayList<? extends TypeString> al, String type) {
+  public static int countObjectsOfType(java.util.List<? extends TypeString> al, String type) {
     int retVal = 0;
     if (al != null)
       retVal = al.stream().filter((s) -> (s.getType().equals(type))).map((_item) -> 1).reduce(retVal, Integer::sum);
