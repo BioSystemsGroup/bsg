@@ -193,8 +193,8 @@ public class CollectionUtils {
     if (al != null) {
       types = new LinkedHashMap<>();
       for (TypeString s : al) {
-        if (types.containsKey(s.getType())) ((MutableInt) types.get(s.getType())).add(1);
-        else types.put(s.getType(), new MutableInt(1));
+        if (types.containsKey(s.getTypeString())) ((MutableInt) types.get(s.getTypeString())).add(1);
+        else types.put(s.getTypeString(), new MutableInt(1));
       }
     }
     return types;
@@ -203,7 +203,7 @@ public class CollectionUtils {
   public static int countObjectsOfType(java.util.List<? extends TypeString> al, String type) {
     int retVal = 0;
     if (al != null)
-      retVal = al.stream().filter((s) -> (s.getType().equals(type))).map((_item) -> 1).reduce(retVal, Integer::sum);
+      retVal = al.stream().filter((s) -> (s.getTypeString().equals(type))).map((_item) -> 1).reduce(retVal, Integer::sum);
     return retVal;
   }
 

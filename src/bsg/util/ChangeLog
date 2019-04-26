@@ -1,3 +1,7 @@
+2019-04-26-10:53  gepr  <gepr@tempusdictum.com>
+
+	* TypeString.java, CollectionUtils.java: Change getType() to getTypeString() to allow ISL code to use SoluteType class properly.
+
 2018-02-06-15:46  gepr  <gepr@tempusdictum.com>
 
 	* CollectionUtils.java (countObjectsOfType()): Change to accept List instead of ArrayList.
