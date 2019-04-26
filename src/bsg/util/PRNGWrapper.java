@@ -62,28 +62,35 @@ public class PRNGWrapper extends cern.jet.random.engine.RandomEngine implements 
 
     System.out.println("\ntesting distribution.");
     cern.colt.list.DoubleArrayList l = new cern.colt.list.DoubleArrayList(500);
-    cern.jet.random.Beta gd = new cern.jet.random.Beta(2.0, 2.0, prngw);
-    for (int ndx=0; ndx<=500; ndx++) {
-      int val = gd.nextInt();
+//    cern.jet.random.Beta gd = new cern.jet.random.Beta(2.0, 2.0, prngw);
+//    for (int ndx=0; ndx<=500; ndx++) {
+//      int val = gd.nextInt();
+//      l.add(val);
+//      System.out.print(val + " ");
+//    }
+    cern.jet.random.Gamma g = new cern.jet.random.Gamma(16.0,1.5,prngw);
+    for (int ndx=0; ndx<= 1000; ndx++) {
+      int val = g.nextInt();
       l.add(val);
       System.out.print(val + " ");
     }
     double mean = cern.jet.stat.Descriptive.mean(l);
     System.out.println("\naverage = "+mean);
     System.out.println("variance = "+cern.jet.stat.Descriptive.sampleVariance(l, mean));
+//
+//
+//    System.out.println("\ntesting distribution.");
+//    l.clear();
+//    gd = new cern.jet.random.Beta(2.0, 2.0, prngw);
+//    for (int ndx=0; ndx<=500; ndx++) {
+//      double val = gd.nextDouble();
+//      l.add(val);
+//      System.out.print(val + " ");
+//    }
+//    mean = cern.jet.stat.Descriptive.mean(l);
+//    System.out.println("\naverage = "+mean);
+//    System.out.println("variance = "+cern.jet.stat.Descriptive.sampleVariance(l, mean));
 
-
-    System.out.println("\ntesting distribution.");
-    l.clear();
-    gd = new cern.jet.random.Beta(2.0, 2.0, prngw);
-    for (int ndx=0; ndx<=500; ndx++) {
-      double val = gd.nextDouble();
-      l.add(val);
-      System.out.print(val + " ");
-    }
-    mean = cern.jet.stat.Descriptive.mean(l);
-    System.out.println("\naverage = "+mean);
-    System.out.println("variance = "+cern.jet.stat.Descriptive.sampleVariance(l, mean));
 
   }
 
