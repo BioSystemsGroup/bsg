@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2016 - Regents of the University of California, San
+ * Copyright 2013-2020 - Regents of the University of California, San
  * Francisco.
  *
  * This program is distributed in the hope that it will be useful, but
@@ -23,5 +23,10 @@ public class LinearGradient extends Gradient {
     double retVal = refX + x * (refY-refX)/(valY-valX);
     //log.debug(retVal+" = "+refX+" + "+x+" * ("+refY+"-"+refX+")/("+valY+"-"+valX+")");
     return retVal;
+  }
+  public static void main(String[] args) {
+    for (int i=0; i<10 ; i++) {
+        log.debug(i+" => "+ LinearGradient.eval(0.9, 0.0, 0.0, 10, (double)i));
+    }
   }
 }

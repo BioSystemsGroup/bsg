@@ -1,3 +1,11 @@
+2020-03-10-12:27  glen e. p. ropella  <gepr@tempusdictum.com>
+
+	* ExpGradient.java: New extension from Gradient for exponential functions.
+	* SigmoidGradient.java: Inherit from Gradient rather than LinearGradient.
+	(eval()): Add intensity parameter to allow for sharper/softer transitions.
+	* LinearGradient.java (main()): Add.
+	* Gradient.java (eval()): Add exception instead of returning NaN.
+
 2019-04-26-10:53  gepr  <gepr@tempusdictum.com>
 
 	* TypeString.java, CollectionUtils.java: Change getType() to getTypeString() to allow ISL code to use SoluteType class properly.

@@ -1,5 +1,5 @@
 /**
- * Copyright 2003-2016 - Regents of the University of California, San
+ * Copyright 2003-2020 - Regents of the University of California, San
  * Francisco.
  *
  * This program is distributed in the hope that it will be useful, but
@@ -18,6 +18,6 @@ public abstract class Gradient {
     return retVal;
   }
   public static double eval(double refX, double refY, double valX, double valY, double x) {
-      return Double.NaN;
+    throw new RuntimeException("Not Implemented.");
   }
 }
