@@ -19,9 +19,27 @@ public class SigmoidGradient extends Gradient {
     double retVal = refX + (refY-refX)/(1.0+StrictMath.exp(intensity*(val-5)));
     return retVal;
   }
+  //public static double eval(double refX, double refY, double intensity, double valX, double valY, double x) {
+  //  double val = LinearGradient.eval(0, 10, valX, valY, x);
+  //  double retVal = refX + (refY-refX)/(1.0+StrictMath.exp(-intensity*(val-5)));
+  //  return retVal;
+  //}
+  public static double eval(double refX, double refY, double sharp, double shift, double valX, double valY, double x) {
+    double val = LinearGradient.eval(10, 0, valX, valY, x);
+    //double retVal = refX + (refY-refX)/(1.0+StrictMath.exp(sharp*(val-shift)));
+    double retVal = refX + (refY-refX)/(1.0+shift*StrictMath.exp(sharp*(val-5)));
+    return retVal;
+  }
+  //public static double eval2(double refX, double refY, double sharp, double shift, double totaldist, double d) {
+ //   double val = LinearGradient.eval(0, 10, totaldist, d);
+    //double retVal = refX + (refY-refX)/(1.0+StrictMath.exp(-sharp*(val-shift)));
+ //   double retVal = refX + (refY-refX)/(1.0+shift*StrictMath.exp(-sharp*(val-5)));
+ //   return retVal;
+ // }
   public static void main(String[] args) {
     for (double i=0; i<10 ; i += 1) {
         System.out.println(i+", "+ SigmoidGradient.eval(5, 100, 1, 0, 10, i));
+        System.out.println(i+", "+ SigmoidGradient.eval(5, 100, 1, 20, 0, 10, i));
     }
   }
   

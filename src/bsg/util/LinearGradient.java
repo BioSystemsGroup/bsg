@@ -24,9 +24,15 @@ public class LinearGradient extends Gradient {
     //log.debug(retVal+" = "+refX+" + "+x+" * ("+refY+"-"+refX+")/("+valY+"-"+valX+")");
     return retVal;
   }
+  public static double eval(double Y1, double Y2, double totaldist, double d) {
+    double retVal = Y1 + (d/totaldist) * (Y2 - Y1);
+    //log.debug(retVal+" = "+Y1+" + ("+d+"/"+totaldist+") * ("+Y2+"-"+Y1+")");
+    return retVal;
+  }
   public static void main(String[] args) {
     for (int i=0; i<10 ; i++) {
         log.debug(i+" => "+ LinearGradient.eval(0.9, 0.0, 0.0, 10, (double)i));
+        log.debug(i+" => "+ LinearGradient.eval(0.9, 0.0, 10, (double)i));
     }
   }
 }
