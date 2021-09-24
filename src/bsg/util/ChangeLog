@@ -1,3 +1,14 @@
+2021-09-24  glen e. p. ropella  <gepr@tempusdictum.com>
+
+	* MutableDouble.java: New.
+	* MutableNumber.java: New.
+	* MutableInt.java: Change to implement MutableNumber.
+	* CollectionUtils.java: (zero_md()): Delete.
+	(zero_mi()): Rename to zero() and make compatible with both Mutable[Int|Double].
+	(sum_mi()): Rename to sum_mn() and ditto above.
+	(countObjectsByType()): Handle MutableDouble.
+	
+
 2020-03-10-12:27  glen e. p. ropella  <gepr@tempusdictum.com>
 
 	* ExpGradient.java: New extension from Gradient for exponential functions.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2018 - Regents of the University of California, San
+ * Copyright 2003-2021 - Regents of the University of California, San
  * Francisco.
  *
  * This program is distributed in the hope that it will be useful, but
@@ -155,24 +155,13 @@ public class CollectionUtils {
   //      which looks like does basically the same thing.
   //
   /**
-   * Replace all values with 0.0.
-   *
-   * @param m java.util.Map<String,sim.util.MutableDouble>
-   */
-  public static void zero_md(Map<String, sim.util.MutableDouble> m) {
-    for (java.util.Map.Entry<String, sim.util.MutableDouble> me : m.entrySet()) {
-      me.getValue().val = 0.0;
-    }
-  }
-
-  /**
    * Replace all values with 0.
    *
    * @param m java.util.Map<String,Number>
    */
-  public static void zero_mi(Map<String, Number> m) {
+  public static void zero(Map<String, Number> m) {
     for (java.util.Map.Entry<String, Number> me : m.entrySet()) {
-      ((MutableInt) me.getValue()).set(0);
+      ((MutableNumber) me.getValue()).set(0);
     }
   }
 
@@ -182,19 +171,26 @@ public class CollectionUtils {
    * @param m java.util.Map<String,Number>
    * @return long
    */
-  public static long sum_mi(Map<String, Number> m) {
-    long retVal = 0;
-    for (Number i : m.values()) retVal += i.longValue();
-    return retVal;
+  public static Number sum_mn(Map<String, Number> m) {
+    if (m.entrySet().stream().anyMatch((me) -> (me.getValue() instanceof MutableDouble))) {
+      double retVal = 0.;
+      for (Number i : m.values()) retVal += i.doubleValue();
+      return retVal;
+    } else {
+      long retVal = 0;
+      for (Number i : m.values()) retVal += i.longValue();
+      return retVal;
+    }
   }
-
+  
   public static Map<String, Number> countObjectsByType(java.util.List<? extends TypeString> al) {
     LinkedHashMap<String, Number> types = null;
     if (al != null) {
       types = new LinkedHashMap<>();
       for (TypeString s : al) {
-        if (types.containsKey(s.getTypeString())) ((MutableInt) types.get(s.getTypeString())).add(1);
-        else types.put(s.getTypeString(), new MutableInt(1));
+        if (types.containsKey(s.getTypeString())) ((MutableNumber) types.get(s.getTypeString())).add(1);
+        else if (!types.isEmpty() && types.entrySet().stream().findFirst().get().getValue() instanceof MutableInt) types.put(s.getTypeString(),new MutableInt(1));
+        else types.put(s.getTypeString(),new MutableDouble(1.0));
       }
     }
     return types;
@@ -258,6 +254,8 @@ public class CollectionUtils {
       Number dst = null;
       if (src instanceof MutableInt) 
         dst = new MutableInt(src.intValue());
+      else if (src instanceof MutableDouble)
+        dst = new MutableDouble(src.doubleValue());
       else if (src instanceof Double || src instanceof Float)
         dst = src.doubleValue();
       else if (src instanceof Integer || src instanceof Long)
@@ -285,6 +283,8 @@ public class CollectionUtils {
         Number n = receiver.get(me.getKey());
         if (n instanceof MutableInt) 
           ((MutableInt) n).add(me.getValue().intValue());
+        else if (n instanceof MutableDouble)
+          ((MutableDouble) n).add(me.getValue().doubleValue());
         else if (n instanceof Double || n instanceof Float)
           receiver.put(me.getKey(), n.doubleValue() + me.getValue().doubleValue());
         else 
@@ -306,6 +306,8 @@ public class CollectionUtils {
         Number n = loser.get(me.getKey());
         if (n instanceof MutableInt) 
           ((MutableInt) n).sub(me.getValue().intValue());
+        else if (n instanceof MutableDouble)
+          ((MutableDouble) n).sub(me.getValue().doubleValue());
         else if (n instanceof Double || n instanceof Float)
           loser.put(me.getKey(), n.doubleValue() - me.getValue().doubleValue());
         else 

@@ -9,16 +9,19 @@
 
 package bsg.util;
 
-public class MutableInt extends Number {
+public class MutableInt extends Number implements MutableNumber {
   private static final long serialVersionUID = -7399169793513727172L;
    public long val = -Integer.MAX_VALUE;
-   
+   public MutableInt() {}
    public MutableInt(long i) {
       val = i;
    }
-   public MutableInt set(long i) { val = i; return this;}
-   public MutableInt add(long i) { val += i; return this;}
-   public MutableInt sub(long i) { val -= i; return this;}
+  @Override
+   public MutableInt set(Number i) { val = i.intValue(); return this;}
+  @Override
+   public MutableInt add(Number i) { val += i.intValue(); return this;}
+  @Override
+   public MutableInt sub(Number i) { val -= i.intValue(); return this;}
    
   @Override
    public double doubleValue() { return (double)val; }
